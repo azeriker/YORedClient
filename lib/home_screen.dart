@@ -21,9 +21,9 @@ class _HomeState extends State<HomeScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _children = [
-    ReportScreen(Colors.white),
-    ReportScreen(Colors.deepOrange),
-    ReportScreen(Colors.green)
+    ReportScreen(),
+    ReportScreen(),
+    ReportScreen()
   ];
 
   void onTabTapped(int index) {

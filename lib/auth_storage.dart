@@ -32,6 +32,7 @@ class AuthStorage {
     // Write the file
     return file.writeAsString('$token');
   }
+
   static Future<File> clearAuth() async {
     final file = await _localFile;
 

@@ -41,7 +41,7 @@ class _loginScreenState extends State<LoginScreen> {
     return new Container(
       child: new Column(
         children: <Widget>[
-          new RaisedButton(
+          RaisedButton(
             child: new Text('Войти'),
             onPressed: _loginPressed,
           ),
