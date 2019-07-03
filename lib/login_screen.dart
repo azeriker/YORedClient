@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'http_helper.dart';
 import 'auth_storage.dart';
+import 'dart:async';
+import 'dart:convert';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -59,7 +61,8 @@ class _loginScreenState extends State<LoginScreen> {
               inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
-                  labelText: 'Телефон', icon: Icon(Icons.phone_iphone),
+                  labelText: 'Телефон',
+                  icon: Icon(Icons.phone_iphone),
                   hintText: '79993332244'),
             ),
           ),
@@ -81,10 +84,11 @@ class _loginScreenState extends State<LoginScreen> {
 
   void _loginPressed() {
     print('The user wants to login with $_phone and $_password');
-    if(_phone=="79136479565"&& _password=="123")
-    {
-      AuthStorage.writeAuth(_phone);
-      Navigator.pushReplacementNamed(context, '/home/$_phone');
-    }
+    HttpHelper.Login(new AuthRequest(_phone, _password))
+        .then((response) async => {
+              print("get response"),
+              await AuthStorage.writeAuth(response.token),
+              Navigator.pushReplacementNamed(context, '/home/${response.token}')
+            });
   }
 }

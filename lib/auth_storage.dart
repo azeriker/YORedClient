@@ -26,10 +26,16 @@ class AuthStorage {
     }
   }
 
-  static Future<File> writeAuth(String info) async {
+  static Future<File> writeAuth(String token) async {
     final file = await _localFile;
 
     // Write the file
-    return file.writeAsString('$info');
+    return file.writeAsString('$token');
+  }
+  static Future<File> clearAuth() async {
+    final file = await _localFile;
+
+    // Write the file
+    return file.delete();
   }
 }
