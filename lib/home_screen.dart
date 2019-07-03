@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
+import 'package:yo_red/all_activity_screen.dart';
 import 'package:yo_red/auth_storage.dart';
 import 'report_screen.dart';
 
@@ -21,7 +22,7 @@ class _HomeState extends State<HomeScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _children = [
-    ReportScreen(),
+    AllActivityScreen(Colors.white),
     ReportScreen(),
     ReportScreen()
   ];
