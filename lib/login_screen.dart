@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'auth_storage.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _loginScreenState();
@@ -81,6 +83,7 @@ class _loginScreenState extends State<LoginScreen> {
     print('The user wants to login with $_phone and $_password');
     if(_phone=="79136479565"&& _password=="123")
     {
+      AuthStorage.writeAuth(_phone);
       Navigator.pushReplacementNamed(context, '/home/$_phone');
     }
   }

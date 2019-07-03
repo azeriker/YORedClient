@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'home_screen.dart';
 import 'login_screen.dart';
+import 'auth_storage.dart';
 
 Future<void> main() async {
   // Obtain a list of the available cameras on the device.
@@ -19,8 +20,8 @@ Future<void> main() async {
     MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),
-      home: LoginScreen(),
-      initialRoute: '/',
+      home: (await AuthStorage.readAuth()==null)?LoginScreen():HomeScreen(await AuthStorage.readAuth()),
+      initialRoute: "/",
       routes: {
       '/login': (context) => LoginScreen(),
       '/home': (context) => HomeScreen(""),
