@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class AuthResponse {
@@ -23,26 +24,23 @@ class AuthRequest {
 
   AuthRequest(this.phone, this.password);
 
-  Map<String, dynamic> toJson() =>
-    {
-      'login': phone,
-      'password': password,
-    };
+  Map<String, dynamic> toJson() => {
+        'login': phone,
+        'password': password,
+      };
 }
 
-class ListReportResponse{
+class ListReportResponse {
   List<ReportResponse> reports;
 
   ListReportResponse({this.reports});
 
   factory ListReportResponse.fromJson(Map<String, dynamic> json) {
-    return ListReportResponse(
-      reports: json['reports']
-    );
+    return ListReportResponse(reports: json['reports']);
   }
 }
 
-class ReportResponse{
+class ReportResponse {
   String id;
   String title;
   List<String> photos;
@@ -53,7 +51,16 @@ class ReportResponse{
   String latitude;
   String longitude;
 
-  ReportResponse({this.id, this.title, this.photos, this.date, this.description, this.status, this.comment, this.latitude, this.longitude});
+  ReportResponse(
+      {this.id,
+      this.title,
+      this.photos,
+      this.date,
+      this.description,
+      this.status,
+      this.comment,
+      this.latitude,
+      this.longitude});
 
   factory ReportResponse.fromJson(Map<String, dynamic> json) {
     return ReportResponse(
@@ -69,30 +76,27 @@ class ReportResponse{
     );
   }
 
-  Map<String, dynamic> toJson() =>
-    {
-      'id': id,
-      'title': title,
-      'photos': photos,
-      'date': date,
-      'description': description,
-      'status': status,
-      'comment': comment,
-      'latitude': latitude,
-      'longitude': longitude
-    };
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+        'photos': photos,
+        'date': date,
+        'description': description,
+        'status': status,
+        'comment': comment,
+        'latitude': latitude,
+        'longitude': longitude
+      };
 }
 
-enum ReportStatus{
-  New,
-  InProgress,
-  Done,
-  Rejected
-}
+enum ReportStatus { New, InProgress, Done, Rejected }
 
-class HttpHelper{
+class HttpHelper {
   static Future<AuthResponse> Login(AuthRequest request) async {
-    return http.post("http://10.0.2.2:5000/api/auth/token?login=${request.phone}&password=${request.password}").then((response) {
+    return http
+        .post(
+            "http://10.0.2.2:5000/api/auth/token?login=${request.phone}&password=${request.password}")
+        .then((response) {
       final int statusCode = response.statusCode;
       print(statusCode);
       if (statusCode < 200 || statusCode > 400 || json == null) {
@@ -102,8 +106,29 @@ class HttpHelper{
     });
   }
 
-  static Future<List<ReportResponse>> GetAllReports() async{
-    return http.get("http://10.0.2.2:5000/Reports/Get").then((response){
+  static Future<bool> PostReport(ReportResponse report, token) async {
+    var body = jsonEncode(report);
+    print(body);
+    return http.post(
+        "http://10.0.2.2:5000/api/Reports/Create",
+         body :body, headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+          "Content-Type": "application/json"
+        }).then((response) {
+      final int statusCode = response.statusCode;
+      print(statusCode);
+      if (statusCode < 200 || statusCode > 400 || json == null) {
+        return false;
+      }
+      print("response ${response.body}");
+      return true;
+    });
+  }
+
+  static Future<List<ReportResponse>> GetAllReports(token) async {
+    return http.get("http://10.0.2.2:5000/api/Reports/Get", headers: {
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    }).then((response) {
       final int statusCode = response.statusCode;
       print(statusCode);
       if (statusCode < 200 || statusCode > 400 || json == null) {
@@ -111,7 +136,8 @@ class HttpHelper{
       }
 
       Iterable l = json.decode(response.body);
-      List<ReportResponse> reports = l.map((model) => ReportResponse.fromJson(model)).toList();
+      List<ReportResponse> reports =
+          l.map((model) => ReportResponse.fromJson(model)).toList();
       return reports;
     });
   }

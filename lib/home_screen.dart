@@ -9,23 +9,26 @@ import 'package:yo_red/auth_storage.dart';
 import 'report_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String login;
-  HomeScreen(this.login);
+  String token;
+  HomeScreen(this.token);
 
   @override
   State<StatefulWidget> createState() {
-    return _HomeState();
+    return _HomeState(token);
   }
 }
 
 class _HomeState extends State<HomeScreen> {
   int _currentIndex = 0;
+  var token="";
+  _HomeState(this.token){
+    _children = [
+      AllActivityScreen(token),
+      ReportScreen(token),
+      ReportScreen(token)];
+  }
 
-  final List<Widget> _children = [
-    AllActivityScreen(),
-    ReportScreen(),
-    ReportScreen()
-  ];
+  List<Widget> _children = [];
 
   void onTabTapped(int index) {
     setState(() {
@@ -36,7 +39,7 @@ class _HomeState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Привет, ${widget.login}'), actions: <Widget>[
+      appBar: AppBar(title: Text('Привет, ${widget.token}'), actions: <Widget>[
         // action button
         IconButton(
           icon: Icon(Icons.exit_to_app),

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:yo_red/http_helper.dart';
 
 class AllActivityScreen extends StatefulWidget {
+  var token;
+  AllActivityScreen(this.token);
   /*return ListView(
       children: <Widget>[
         ListTile(
@@ -21,16 +23,14 @@ class AllActivityScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return new AllActivityScreenState();
+    return new AllActivityScreenState(token);
   }
 }
 
 class AllActivityScreenState extends State<AllActivityScreen> {
   List<ReportResponse> reports=[];
-
-  AllActivityScreenState() {
-    HttpHelper.GetAllReports()
+  AllActivityScreenState(token) {
+    HttpHelper.GetAllReports(token)
         .then((response) async => {print(response), reports = response, setState(() { })
         });
   }
