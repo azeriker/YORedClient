@@ -6,6 +6,7 @@ import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'package:yo_red/all_activity_screen.dart';
 import 'package:yo_red/auth_storage.dart';
+import 'package:yo_red/myactivity_screen.dart';
 import 'package:yo_red/report_info_screen.dart';
 import 'report_screen.dart';
 
@@ -26,7 +27,7 @@ class _HomeState extends State<HomeScreen> {
     _children = [
       AllActivityScreen(token),
       ReportScreen(token),
-      AllActivityScreen(token)];
+      MyActivityScreen(token)];
   }
 
   List<Widget> _children = [];
