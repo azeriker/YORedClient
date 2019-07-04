@@ -38,6 +38,11 @@ Future<void> main() async {
             builder: (BuildContext context) => HomeScreen(pathElements[2]),
           );
         }
+        if (pathElements[1] == 'report') {
+          return MaterialPageRoute<bool>(
+            builder: (BuildContext context) => ReportInfoScreen(pathElements[2]),
+          );
+        }
         return null;
       },
     ),

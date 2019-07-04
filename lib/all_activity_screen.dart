@@ -46,7 +46,7 @@ class AllActivityScreenState extends State<AllActivityScreen> {
               trailing: report.status==ReportStatus.New ? Icon(Icons.alarm_add) : Icon(report.status==ReportStatus.InProgress?Icons.alarm: (report.status==ReportStatus.Done?Icons.thumb_up:Icons.thumb_down)),
               subtitle: Text(DateFormat('kk:mm dd-MM-yyyy').format(report.date)),
               onTap: () {
-                print('kek');
+                Navigator.pushNamed(context, '/report/${report.id}');
               });
         });
   }

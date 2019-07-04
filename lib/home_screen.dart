@@ -26,7 +26,7 @@ class _HomeState extends State<HomeScreen> {
     _children = [
       AllActivityScreen(token),
       ReportScreen(token),
-      ReportInfoScreen("5d1cdfb6905ecc487cf940a4")];
+      AllActivityScreen(token)];
   }
 
   List<Widget> _children = [];
