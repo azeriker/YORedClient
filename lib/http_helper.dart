@@ -141,4 +141,19 @@ class HttpHelper {
       return reports;
     });
   }
+
+  static Future<ReportResponse> GetReport(String id) async {
+    return http
+        .get("http://10.0.2.2:5000/api/reports/getById?id=" + id)
+        .then((response) {
+      final int statusCode = response.statusCode;
+      print(statusCode);
+      if (statusCode < 200 || statusCode > 400 || json == null) {
+        throw new Exception("Ошибка при загрузке заявки");
+      }
+
+      var report = ReportResponse.fromJson(json.decode(response.body));
+      return report;
+    });
+  }
 }
