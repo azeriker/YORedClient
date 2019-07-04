@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:yo_red/http_helper.dart';
 
 class ReportInfoScreen extends StatefulWidget {
+  var reportId;
+
+  ReportInfoScreen(this.reportId);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState

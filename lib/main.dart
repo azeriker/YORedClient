@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
+import 'package:yo_red/report_info_screen.dart';
 
 import 'home_screen.dart';
 import 'login_screen.dart';
@@ -25,6 +26,7 @@ Future<void> main() async {
       routes: {
       '/login': (context) => LoginScreen(),
       '/home': (context) => HomeScreen(""),
+      '/report': (context) => ReportInfoScreen("")
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElements = settings.name.split('/');
