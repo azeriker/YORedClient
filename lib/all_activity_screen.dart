@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:yo_red/http_helper.dart';
 
@@ -31,7 +31,8 @@ class AllActivityScreenState extends State<AllActivityScreen> {
 
   AllActivityScreenState() {
     HttpHelper.GetAllReports()
-        .then((response) async => {print(response), this.reports = response});
+        .then((response) async => {print(response), reports = response, setState(() { })
+        });
   }
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,8 @@ class AllActivityScreenState extends State<AllActivityScreen> {
           return new ListTile(
               //leading: Image.memory(BASE64.decode(report.photos.first())),
               title: Text(report.title),
-              trailing: Icon(Icons.keyboard_arrow_right),
+              trailing: report.status==ReportStatus.New ? Icon(Icons.alarm_add) : Icon(report.status==ReportStatus.InProgress?Icons.alarm: (report.status==ReportStatus.Done?Icons.thumb_up:Icons.thumb_down)),
+              subtitle: Text(DateFormat('kk:mm dd-MM-yyyy').format(report.date)),
               onTap: () {
                 print('kek');
               });
