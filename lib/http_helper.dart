@@ -95,12 +95,12 @@ class HttpHelper {
   static Future<AuthResponse> Login(AuthRequest request) async {
     return http
         .post(
-            "http://10.0.2.2:5000/api/auth/token?login=${request.phone}&password=${request.password}")
+            "https://yoredapi.azurewebsites.net/api/auth/token?login=${request.phone}&password=${request.password}")
         .then((response) {
       final int statusCode = response.statusCode;
       print(statusCode);
-      if (statusCode < 200 || statusCode > 400 || json == null) {
-        throw new Exception("Неправильное имя пользователя или пароль");
+      if (statusCode < 200 || statusCode >= 400 || json == null) {
+        return AuthResponse(login: "",token: "");
       }
       return AuthResponse.fromJson(json.decode(response.body));
     });
@@ -109,9 +109,9 @@ class HttpHelper {
   static Future<bool> PostReport(ReportResponse report, token) async {
     var body = jsonEncode(report);
     print(body);
-    return http.post(
-        "http://10.0.2.2:5000/api/Reports/Create",
-         body :body, headers: {
+    return http.post("https://yoredapi.azurewebsites.net/api/Reports/Create",
+        body: body,
+        headers: {
           HttpHeaders.authorizationHeader: "Bearer $token",
           "Content-Type": "application/json"
         }).then((response) {
@@ -126,9 +126,10 @@ class HttpHelper {
   }
 
   static Future<List<ReportResponse>> GetAllReports(token) async {
-    return http.get("http://10.0.2.2:5000/api/Reports/Get", headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token"
-    }).then((response) {
+    return http.get("https://yoredapi.azurewebsites.net/api/Reports/Get",
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token"
+        }).then((response) {
       final int statusCode = response.statusCode;
       print(statusCode);
       if (statusCode < 200 || statusCode > 400 || json == null) {
@@ -143,9 +144,10 @@ class HttpHelper {
   }
 
   static Future<List<ReportResponse>> GetMyReports(token) async {
-    return http.get("http://10.0.2.2:5000/api/Reports/GetByUser", headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token"
-    }).then((response) {
+    return http.get("https://yoredapi.azurewebsites.net/api/Reports/GetByUser",
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token"
+        }).then((response) {
       final int statusCode = response.statusCode;
       print(statusCode);
       if (statusCode < 200 || statusCode > 400 || json == null) {
@@ -161,7 +163,7 @@ class HttpHelper {
 
   static Future<ReportResponse> GetReport(String id) async {
     return http
-        .get("http://10.0.2.2:5000/api/reports/getById?id=" + id)
+        .get("https://yoredapi.azurewebsites.net/api/reports/getById?id=" + id)
         .then((response) {
       final int statusCode = response.statusCode;
       print(statusCode);

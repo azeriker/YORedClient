@@ -13,6 +13,8 @@ class LoginScreen extends StatefulWidget {
 class _loginScreenState extends State<LoginScreen> {
   String _phone = "";
   String _password = "";
+  bool _isLoading = false;
+  String _errorMessage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class _loginScreenState extends State<LoginScreen> {
         child: new Column(
           children: <Widget>[
             _buildTextFields(),
+            _errorMessage == "" ? Container() : Text(_errorMessage),
             _buildButtons(),
           ],
         ),
@@ -42,7 +45,7 @@ class _loginScreenState extends State<LoginScreen> {
       child: new Column(
         children: <Widget>[
           RaisedButton(
-            child: new Text('Войти'),
+            child: _isLoading ? CircularProgressIndicator() : new Text('Войти'),
             onPressed: _loginPressed,
           ),
         ],
@@ -84,11 +87,27 @@ class _loginScreenState extends State<LoginScreen> {
 
   void _loginPressed() {
     print('The user wants to login with $_phone and $_password');
+
+    setState(() {
+      _errorMessage = "";
+      _isLoading = true;
+    });
     HttpHelper.Login(new AuthRequest(_phone, _password))
         .then((response) async => {
               print("get response"),
-              await AuthStorage.writeAuth(response.token),
-              Navigator.pushReplacementNamed(context, '/home/${response.token}')
+              if (response.token == "")
+                {
+                  setState(() {
+                    _errorMessage = "Bad login or password";
+                    _isLoading = false;
+                  }),
+                }
+              else
+                {
+                  await AuthStorage.writeAuth(response.token),
+                  Navigator.pushReplacementNamed(
+                      context, '/home/${response.token}')
+                }
             });
   }
 }
